@@ -13,5 +13,5 @@ interface TodolistService {
 
     fun updateTodolist(id: Long, request: UpdateTodolistRequest): TodolistResponse
 
-    fun deleteTodolist(id: Long): TodolistResponse
+    fun deleteTodolist(id: Long)
 }
