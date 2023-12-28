@@ -3,42 +3,50 @@ package com.example.todolist.domain.list.controller
 import com.example.todolist.domain.list.dto.CreateTodolistRequest
 import com.example.todolist.domain.list.dto.TodolistResponse
 import com.example.todolist.domain.list.dto.UpdateTodolistRequest
+import com.example.todolist.domain.list.service.TodolistService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
-@RequestMapping("/todolist")
+@RequestMapping("/todolistAll")
 @RestController
-class TodolistController {
+class TodolistController(
+        private val todolistService: TodolistService
+) {
 
     @GetMapping
-    fun getTodolistAll(): ResponseEntity<TodolistResponse>{
-        TODO()
+    fun getTodolistAll(): ResponseEntity<List<TodolistResponse>>{
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(todolistService.getTodolistAll())
     }
 
     @GetMapping("/{id}")
     fun getTodolist(@PathVariable id: Long): ResponseEntity<TodolistResponse>{
-        TODO()
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(todolistService.getTodolist(id))
     }
 
     @PostMapping
     fun createTodolist(@RequestBody createToDoListRequest: CreateTodolistRequest): ResponseEntity<TodolistResponse>{
-        TODO()
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(todolistService.createTodolist(createToDoListRequest))
     }
 
-    @PostMapping("/{id}")
-    fun updateTodolist(@PathVariable id: String, @RequestBody updateToDoListRequest: UpdateTodolistRequest): ResponseEntity<TodolistResponse>{
-        TODO()
+    @PutMapping("/{id}")
+    fun updateTodolist(@PathVariable id: Long, @RequestBody updateToDoListRequest: UpdateTodolistRequest): ResponseEntity<TodolistResponse>{
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(todolistService.updateTodolist(id, updateToDoListRequest))
     }
 
     @DeleteMapping("/{id}")
-    fun deleteTodolist(@PathVariable id: String): ResponseEntity<TodolistResponse>{
-        TODO()
+    fun deleteTodolist(@PathVariable id: Long): ResponseEntity<Unit>{
+        todolistService.deleteTodolist(id)
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build()
     }
-
 }

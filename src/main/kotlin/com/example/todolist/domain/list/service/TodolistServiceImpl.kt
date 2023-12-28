@@ -30,7 +30,7 @@ class TodolistServiceImpl(
                 Todolist(
                         name = request.name,
                         title = request.title,
-                        comment = request.comment
+                        comment = request.comment,
                 )
         ).toResponse()
     }

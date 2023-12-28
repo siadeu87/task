@@ -1,5 +1,20 @@
 spring:
+  profiles:
+    include: key
   datasource:
-    url: jdbc:postgresql://db.jpnhuuerkthmttdjeswd.supabase.co:5432/postgres
-    username: postgres
+    url:
+    username:
     password:
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        orm:
+          jdbc:
+            bind: trace
