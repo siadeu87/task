@@ -1,7 +1,7 @@
 package com.example.todolist.domain.comment.model
 
 import com.example.todolist.domain.comment.dto.CommentResponse
-import com.example.todolist.domain.list.model.Todolist
+import com.example.todolist.domain.task.model.Task
 import jakarta.persistence.*
 
 @Entity
@@ -18,15 +18,15 @@ class Comment(
         var comment: String,
 
         @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "todolist_id")
-        var todolist: Todolist
+        @JoinColumn(name = "task_id")
+        var task: Task
 ) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
 
-    constructor() : this("","","",Todolist())
+    constructor() : this("","","",Task())
 }
 
 fun Comment.toResponse(): CommentResponse{

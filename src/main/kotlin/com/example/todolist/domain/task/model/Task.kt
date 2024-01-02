@@ -1,15 +1,15 @@
-package com.example.todolist.domain.list.model
+package com.example.todolist.domain.task.model
 
 import com.example.todolist.domain.comment.model.Comment
-import com.example.todolist.domain.list.dto.TodolistResponse
+import com.example.todolist.domain.task.dto.TaskResponse
 import jakarta.persistence.Column
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
 
 @Entity
-@Table(name = "todolist")
-class Todolist(
+@Table(name = "task")
+class Task(
 
         @Column(name = "name")
         var name: String,
@@ -23,7 +23,7 @@ class Todolist(
         @Column(name = "time")
         var time: LocalDateTime = LocalDateTime.now(),
 
-        @OneToMany(mappedBy = "todolist", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
+        @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
         var comments: MutableList<Comment> = mutableListOf()
 ) {
     @Id
@@ -42,8 +42,8 @@ class Todolist(
     constructor() : this("", "", "", LocalDateTime.now())
 }
 
-fun Todolist.toResponse(): TodolistResponse{
-    return TodolistResponse(
+fun Task.toResponse(): TaskResponse{
+    return TaskResponse(
             id = id!!,
             name = name,
             title = title,

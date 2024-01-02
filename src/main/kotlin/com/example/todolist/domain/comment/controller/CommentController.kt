@@ -3,7 +3,7 @@ package com.example.todolist.domain.comment.controller
 import com.example.todolist.domain.comment.dto.CommentResponse
 import com.example.todolist.domain.comment.dto.UpdateCommentRequest
 import com.example.todolist.domain.comment.dto.WriteCommentRequest
-import com.example.todolist.domain.list.service.TodolistService
+import com.example.todolist.domain.task.service.TaskService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RequestMapping("/todolistAll/{id}/comments")
+@RequestMapping("/tasks/{id}/comments")
 @RestController
 class CommentController(
-        private val todolistService: TodolistService
+        private val taskService: TaskService
 ) {
 
     @GetMapping
     fun getComment(@PathVariable id: Long): ResponseEntity<List<CommentResponse>> {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(todolistService.getComment(id))
+                .body(taskService.getComment(id))
     }
 
     @PostMapping
@@ -35,7 +35,7 @@ class CommentController(
     ): ResponseEntity<CommentResponse> {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(todolistService.writeComment(id, writeCommentRequest))
+                .body(taskService.writeComment(id, writeCommentRequest))
     }
 
     @PutMapping("/{commentId}")
@@ -46,7 +46,7 @@ class CommentController(
     ): ResponseEntity<CommentResponse>{
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(todolistService.updateComment(id,commentId, updateCommentRequest))
+                .body(taskService.updateComment(id,commentId, updateCommentRequest))
     }
 
     @DeleteMapping("/{commentId}")
@@ -54,7 +54,7 @@ class CommentController(
             @PathVariable id: Long,
             @PathVariable commentId: Long
     ): ResponseEntity<Unit>{
-        todolistService.deleteComment(id, commentId)
+        taskService.deleteComment(id, commentId)
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build()

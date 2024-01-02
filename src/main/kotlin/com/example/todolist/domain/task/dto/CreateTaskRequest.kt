@@ -1,6 +1,6 @@
-package com.example.todolist.domain.list.dto
+package com.example.todolist.domain.task.dto
 
-data class UpdateTodolistRequest(
+data class CreateTaskRequest(
         var name: String,
         var title: String,
         var comment: String?

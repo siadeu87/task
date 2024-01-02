@@ -1,8 +1,8 @@
-package com.example.todolist.domain.list.dto
+package com.example.todolist.domain.task.dto
 
 import java.time.LocalDateTime
 
-data class TodolistResponse(
+data class TaskResponse(
         val id: Long,
         val name: String,
         val title: String,

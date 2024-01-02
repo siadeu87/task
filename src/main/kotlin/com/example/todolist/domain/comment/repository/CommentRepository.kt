@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 
 interface CommentRepository: JpaRepository<Comment, Long>{
-    fun findByTodolistIdAndId(id: Long, commentId: Long) :Comment?
+    fun findByTaskIdAndId(id: Long, commentId: Long) :Comment?
 }
