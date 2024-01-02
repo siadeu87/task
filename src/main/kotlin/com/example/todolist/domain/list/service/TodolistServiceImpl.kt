@@ -3,6 +3,9 @@ package com.example.todolist.domain.list.service
 import com.example.todolist.domain.comment.dto.CommentResponse
 import com.example.todolist.domain.comment.dto.UpdateCommentRequest
 import com.example.todolist.domain.comment.dto.WriteCommentRequest
+import com.example.todolist.domain.comment.model.Comment
+import com.example.todolist.domain.comment.model.toResponse
+import com.example.todolist.domain.comment.repository.CommentRepository
 import com.example.todolist.domain.exception.ModelNotFoundException
 import com.example.todolist.domain.list.dto.CreateTodolistRequest
 import com.example.todolist.domain.list.dto.TodolistResponse
@@ -16,7 +19,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class TodolistServiceImpl(
-        private val todolistRepository: TodolistRepository
+        private val todolistRepository: TodolistRepository,
+        private val commentRepository: CommentRepository
 ): TodolistService{
     override fun getTodolistAll(): List<TodolistResponse> {
         return todolistRepository.findAll().map { it.toResponse() }
@@ -56,23 +60,44 @@ class TodolistServiceImpl(
         return todolistRepository.delete(todolist)
     }
 
-    override fun getComment(): List<CommentResponse> {
-        TODO("Not yet implemented")
+    override fun getComment(id: Long): List<CommentResponse> {
+        val todolist = todolistRepository.findByIdOrNull(id) ?: throw  ModelNotFoundException("Todolist", id)
+        return todolist.comments.map { it.toResponse() }
     }
 
     @Transactional
     override fun updateComment(id: Long, commentId: Long, request: UpdateCommentRequest): CommentResponse {
-        TODO("Not yet implemented")
+        val comments = commentRepository.findByTodolistIdAndId(id, commentId) ?: throw ModelNotFoundException("Comment", commentId)
+        val (name, password,comment) = request
+        comments.name = name
+        comments.password = password
+        comments.comment = comment
+
+        return commentRepository.save(comments).toResponse()
     }
 
     @Transactional
     override fun writeComment(id: Long, request: WriteCommentRequest): CommentResponse {
-        TODO("Not yet implemented")
+        val todolist = todolistRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Todolist", id)
+        val comment = Comment(
+                name = request.name,
+                password = request.password,
+                comment = request.comment,
+                todolist = todolist
+        )
+        todolist.writeComment(comment)
+        todolistRepository.save(todolist)
+
+        return comment.toResponse()
     }
 
     @Transactional
-    override fun deleteComment(id: Long) {
-        TODO("Not yet implemented")
+    override fun deleteComment(id: Long, commentId: Long) {
+        val todolist = todolistRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Todolist", id)
+        val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
+
+        todolist.deleteComment(comment)
+        todolistRepository.save(todolist)
     }
 
 }

@@ -18,11 +18,11 @@ interface TodolistService {
 
     fun deleteTodolist(id: Long)
 
-    fun getComment(): List<CommentResponse>
+    fun getComment(id: Long): List<CommentResponse>
 
     fun updateComment(id: Long, commentId: Long, request: UpdateCommentRequest): CommentResponse
 
     fun writeComment(id: Long, request: WriteCommentRequest): CommentResponse
 
-    fun deleteComment(id: Long)
+    fun deleteComment(id: Long, commentId: Long)
 }
