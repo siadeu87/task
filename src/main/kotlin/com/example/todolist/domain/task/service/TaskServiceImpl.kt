@@ -11,6 +11,7 @@ import com.example.todolist.domain.task.dto.CreateTaskRequest
 import com.example.todolist.domain.task.dto.TaskResponse
 import com.example.todolist.domain.task.dto.UpdateTaskRequest
 import com.example.todolist.domain.task.model.Task
+import com.example.todolist.domain.task.model.TaskStatus
 import com.example.todolist.domain.task.model.toResponse
 import com.example.todolist.domain.task.repository.TaskRepository
 import jakarta.transaction.Transactional
@@ -38,6 +39,7 @@ class TaskServiceImpl(
                         name = request.name,
                         title = request.title,
                         comment = request.comment,
+                        status = TaskStatus.FALSE
                 )
         ).toResponse()
     }
@@ -50,6 +52,14 @@ class TaskServiceImpl(
         task.name = name
         task.title = title
         task.comment = detail
+
+        return taskRepository.save(task).toResponse()
+    }
+
+    @Transactional
+    override fun checkTask(id: Long): TaskResponse {
+        val task = taskRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Task", id)
+        task.status = TaskStatus.TRUE
 
         return taskRepository.save(task).toResponse()
     }

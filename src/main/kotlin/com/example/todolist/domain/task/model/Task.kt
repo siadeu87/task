@@ -20,6 +20,10 @@ class Task(
         @Column(name = "comment")
         var comment: String?,
 
+        @Enumerated(EnumType.STRING)
+        @Column(name = "status")
+        var status: TaskStatus,
+
         @Column(name = "time")
         var time: LocalDateTime = LocalDateTime.now(),
 
@@ -39,7 +43,7 @@ class Task(
     }
 
 
-    constructor() : this("", "", "", LocalDateTime.now())
+    constructor() : this("", "", "", TaskStatus.FALSE ,LocalDateTime.now())
 }
 
 fun Task.toResponse(): TaskResponse{
@@ -48,6 +52,7 @@ fun Task.toResponse(): TaskResponse{
             name = name,
             title = title,
             comment = comment,
+            status = status.name,
             time = time
     )
 }

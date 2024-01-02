@@ -16,6 +16,8 @@ interface TaskService {
 
     fun updateTask(id: Long, request: UpdateTaskRequest): TaskResponse
 
+    fun checkTask(id: Long): TaskResponse
+
     fun deleteTask(id: Long)
 
     fun getComment(id: Long): List<CommentResponse>

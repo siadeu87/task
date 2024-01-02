@@ -7,5 +7,6 @@ data class TaskResponse(
         val name: String,
         val title: String,
         val comment: String?,
+        val status: String,
         val time: LocalDateTime
 )

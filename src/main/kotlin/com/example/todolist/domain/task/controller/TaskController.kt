@@ -42,6 +42,11 @@ class TaskController(
                 .body(taskService.updateTask(id, updateToDoListRequest))
     }
 
+    @PatchMapping("/{id}/check")
+    fun checkTask(@PathVariable id: Long): TaskResponse {
+        return taskService.checkTask(id)
+    }
+
     @DeleteMapping("/{id}")
     fun deleteTask(@PathVariable id: Long): ResponseEntity<Unit>{
         taskService.deleteTask(id)
