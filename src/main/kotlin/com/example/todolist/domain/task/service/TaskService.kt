@@ -22,9 +22,9 @@ interface TaskService {
 
     fun getComment(id: Long): List<CommentResponse>
 
-    fun updateComment(id: Long, commentId: Long, request: UpdateCommentRequest): CommentResponse
+    fun updateComment(id: Long, commentId: Long, request: UpdateCommentRequest,verifyName: String, verifyPassword: String): CommentResponse
 
     fun writeComment(id: Long, request: WriteCommentRequest): CommentResponse
 
-    fun deleteComment(id: Long, commentId: Long)
+    fun deleteComment(id: Long, commentId: Long, verifyName: String, verifyPassword: String)
 }

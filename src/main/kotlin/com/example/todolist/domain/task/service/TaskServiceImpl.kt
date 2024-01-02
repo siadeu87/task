@@ -71,14 +71,19 @@ class TaskServiceImpl(
     }
 
     override fun getComment(id: Long): List<CommentResponse> {
-        val todolist = taskRepository.findByIdOrNull(id) ?: throw  ModelNotFoundException("Todolist", id)
+        val todolist = taskRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Todolist", id)
         return todolist.comments.map { it.toResponse() }
     }
 
     @Transactional
-    override fun updateComment(id: Long, commentId: Long, request: UpdateCommentRequest): CommentResponse {
+    override fun updateComment(id: Long, commentId: Long, request: UpdateCommentRequest, verifyName: String, verifyPassword: String): CommentResponse {
         val comments = commentRepository.findByTaskIdAndId(id, commentId) ?: throw ModelNotFoundException("Comment", commentId)
-        val (name, password,comment) = request
+
+        if(comments.password != verifyPassword || comments.name != verifyName){
+            throw ModelNotFoundException("이름 또는 비밀번호가 일치하지 않습니다.", commentId)
+        }
+
+        val (name,password,comment) = request
         comments.name = name
         comments.password = password
         comments.comment = comment
@@ -102,10 +107,13 @@ class TaskServiceImpl(
     }
 
     @Transactional
-    override fun deleteComment(id: Long, commentId: Long) {
+    override fun deleteComment(id: Long, commentId: Long, verifyName: String, verifyPassword: String) {
         val task = taskRepository.findByIdOrNull(id) ?: throw ModelNotFoundException("Task", id)
         val comment = commentRepository.findByIdOrNull(commentId) ?: throw ModelNotFoundException("Comment", commentId)
 
+        if(comment.password != verifyPassword || comment.name != verifyName){
+            throw ModelNotFoundException("이름 또는 비밀번호가 일치하지 않습니다.", commentId)
+        }
         task.deleteComment(comment)
         taskRepository.save(task)
     }

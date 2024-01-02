@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RequestMapping("/tasks/{id}/comments")
@@ -42,19 +43,23 @@ class CommentController(
     fun updateComment(
             @PathVariable id: Long,
             @PathVariable commentId: Long,
-            @RequestBody updateCommentRequest: UpdateCommentRequest
+            @RequestBody updateCommentRequest: UpdateCommentRequest,
+            @RequestParam verifyName: String,
+            @RequestParam verifyPassword: String
     ): ResponseEntity<CommentResponse>{
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(taskService.updateComment(id,commentId, updateCommentRequest))
+                .body(taskService.updateComment(id, commentId, updateCommentRequest, verifyName, verifyPassword))
     }
 
     @DeleteMapping("/{commentId}")
     fun deleteComment(
             @PathVariable id: Long,
-            @PathVariable commentId: Long
+            @PathVariable commentId: Long,
+            @RequestParam verifyName: String,
+            @RequestParam verifyPassword: String
     ): ResponseEntity<Unit>{
-        taskService.deleteComment(id, commentId)
+        taskService.deleteComment(id, commentId, verifyName, verifyPassword)
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build()
