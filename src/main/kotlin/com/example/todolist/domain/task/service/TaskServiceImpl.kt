@@ -24,7 +24,9 @@ class TaskServiceImpl(
         private val commentRepository: CommentRepository
 ): TaskService{
     override fun getTaskList(): List<TaskResponse> {
-        return taskRepository.findAll().map { it.toResponse() }
+        return taskRepository.findAll()
+                .sortedByDescending { it.time }
+                .map { it.toResponse() }
     }
 
     override fun getTask(id: Long): TaskResponse {
