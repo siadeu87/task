@@ -1,6 +1,7 @@
 package com.example.todolist.domain.task.controller
 
 import com.example.todolist.domain.task.dto.CreateTaskRequest
+import com.example.todolist.domain.task.dto.TaskAndCommentResponse
 import com.example.todolist.domain.task.dto.TaskResponse
 import com.example.todolist.domain.task.dto.UpdateTaskRequest
 import com.example.todolist.domain.task.service.TaskService
@@ -22,10 +23,13 @@ class TaskController(
     }
 
     @GetMapping("/{id}")
-    fun getTask(@PathVariable id: Long): ResponseEntity<TaskResponse>{
+    fun getTask(@PathVariable id: Long): ResponseEntity<TaskAndCommentResponse>{
+        val task = taskService.getTask(id)
+        val comment = taskService.getComment(id)
+
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(taskService.getTask(id))
+                .body(TaskAndCommentResponse(task,comment))
     }
 
     @PostMapping
